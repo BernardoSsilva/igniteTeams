@@ -2,13 +2,11 @@ import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
-  background-color: #202024;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+  background-color: ${({theme}) => theme.COLORS.GRAY_600};
+ padding: 24px;
 `;
 
 export const MainTitle = styled.Text`
   font-size: 32px;
-  color: #fff;
+  color: ${({theme}) => theme.COLORS.GRAY_100} ;
 `;

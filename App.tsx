@@ -1,8 +1,13 @@
 import { Groups } from "@screens/groups";
+import { ThemeProvider } from "styled-components";
+import theme from "@theme/index";
+import { StatusBar } from "react-native";
 
 export default function App() {
   return (
-   <Groups />
+    <ThemeProvider theme={theme}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent></StatusBar>
+      <Groups />
+    </ThemeProvider>
   );
 }
-
