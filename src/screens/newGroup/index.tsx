@@ -3,6 +3,7 @@ import { Highlight } from "@components/highlight";
 import { Container, Icon } from "./styles";
 import { Button } from "@components/button";
 import { UsersThree } from "phosphor-react-native";
+import { Input } from "@components/input";
 
 export function NewGroup() {
   return (
@@ -14,6 +15,7 @@ export function NewGroup() {
         title="Nova Turma"
         subtitle="Crie uma turma para adicionar pessoas"
       />
+      <Input />
       <Button title="Criar" />
     </Container>
   );
