@@ -1,13 +1,10 @@
 import { View, StatusBar, Text } from "react-native";
+import { Container, MainTitle } from "./styles";
 
 export function Groups() {
   return (
-    <View>
-      <StatusBar 
-      barStyle="dark-content"
-      backgroundColor="transparent"
-      translucent />
-      <Text>AI ZE DA MANGA</Text>
-    </View>
+    <Container>
+      <MainTitle>Hello</MainTitle>
+    </Container>
   );
 }
