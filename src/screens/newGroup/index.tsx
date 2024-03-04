@@ -1,4 +1,4 @@
-import { Header } from "@components/headder";
+import { Header } from "@components/header";
 import { Highlight } from "@components/highlight";
 import { Container, Icon } from "./styles";
 import { Button } from "@components/button";
