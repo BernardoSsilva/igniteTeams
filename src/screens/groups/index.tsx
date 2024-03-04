@@ -5,6 +5,7 @@ import * as S from "./styles";
 import { useState } from "react";
 import { FlatList } from "react-native";
 import { ListEmpty } from "@components/ListEmpty";
+import { Button } from "@components/button";
 
 export function Groups() {
   const [groups, setGroups] = useState<string[]>([]);
@@ -23,6 +24,7 @@ export function Groups() {
       ) : (
         <ListEmpty message="nenhum registro encontrado!!" />
       )}
+      <Button title="Criar nova turma" />
     </S.Container>
   );
 }
