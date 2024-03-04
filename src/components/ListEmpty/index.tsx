@@ -1,9 +1,13 @@
 import { Container, NotFoundText } from "./styles";
 
-export function ListEmpty() {
+
+type Props = {
+    message:string
+}
+export function ListEmpty({message}:Props) {
   return (
     <Container>
-      <NotFoundText>Nenhuma Turma encontrada!</NotFoundText>
+      <NotFoundText>{message}</NotFoundText>
     </Container>
   );
 }

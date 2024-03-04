@@ -21,7 +21,7 @@ export function Groups() {
           renderItem={({ item }) => <GroupCard title={item} />}
         />
       ) : (
-        <ListEmpty />
+        <ListEmpty message="nenhum registro encontrado!!" />
       )}
     </S.Container>
   );
