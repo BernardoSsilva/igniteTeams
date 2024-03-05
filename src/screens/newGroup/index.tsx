@@ -1,18 +1,22 @@
+import { Button } from "@components/button";
 import { Header } from "@components/header";
 import { Highlight } from "@components/highlight";
-import { Container, Icon } from "./styles";
-import { Button } from "@components/button";
-import { UsersThree } from "phosphor-react-native";
 import { Input } from "@components/input";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import { Alert } from "react-native";
+import { Container, Icon } from "./styles";
 
 export function NewGroup() {
   const navigation = useNavigation();
   const [groupName, setGroupName] = useState("");
 
   function handleNewGroup() {
-    navigation.navigate("players", { group: groupName });
+    if (groupName === "") {
+      Alert.alert("Erro", "O nome de grupo deve possuir algum conteúdo");
+    } else {
+      navigation.navigate("players", { group: groupName });
+    }
   }
   return (
     <Container>
