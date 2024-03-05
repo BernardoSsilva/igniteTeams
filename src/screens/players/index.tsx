@@ -10,7 +10,11 @@ import { useState } from "react";
 import { PlayerCard } from "@components/playerCard";
 import { ListEmpty } from "@components/ListEmpty";
 
-export function Players() {
+
+type Props = {
+  groupName:string
+}
+export function Players({groupName = "Placeholder name"}:Props) {
   const [team, setTeam] = useState("time a");
   const [players, setPlayers] = useState<string[]>([]);
 
@@ -18,7 +22,7 @@ export function Players() {
     <Container>
       <Header showBackButton />
       <Highlight
-        title="Nome da turma"
+        title={groupName}
         subtitle="adicione a galera e separe os times"
       />
       <Form>

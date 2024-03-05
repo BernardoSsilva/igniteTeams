@@ -1,12 +1,11 @@
 import { GroupCard } from "@components/GroupCard";
-import { Header } from "@components/header";
-import { Highlight } from "@components/highlight";
-import * as S from "./styles";
-import { useState } from "react";
-import { FlatList } from "react-native";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/button";
-
+import { Header } from "@components/header";
+import { Highlight } from "@components/highlight";
+import { useState } from "react";
+import { FlatList } from "react-native";
+import * as S from "./styles";
 import { useNavigation } from "@react-navigation/native";
 
 export function Groups() {
