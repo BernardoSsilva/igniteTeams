@@ -19,6 +19,8 @@ import { useCallback, useEffect, useState } from "react";
 import { Alert, FlatList } from "react-native";
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 import { PlayerStorageDTO } from "@storage/player/player.storage.dto";
+import { playersGetByTeam } from "@storage/player/get.player.by.team";
+import { playerRemoveByGroup } from "@storage/player/remove.player";
 
 type RouteParams = {
   group: string;
@@ -33,6 +35,13 @@ export function Players() {
 
   const { group } = route.params as RouteParams;
 
+
+  async function  deletePlayer(playerName:string) {
+      try{
+        await playerRemoveByGroup(group,playerName)
+        fetchPlayersByTeam()
+      }catch{}
+  }
   async function handleDeleteGroup() {
     try {
       await removeGroup(group);
@@ -58,6 +67,7 @@ export function Players() {
       };
       await addPlayerByGroup(newPlayer, group);
       setPlayerName("");
+      await fetchPlayersByTeam()
     } catch (error) {
       if (error instanceof AppError) {
         Alert.alert("Erro", error.message);
@@ -70,14 +80,15 @@ export function Players() {
     }
   }
 
-  async function takeAllPlayers() {
-    setPlayers(await playersGetByGroup(group));
+  async function fetchPlayersByTeam() {
+    const playersByTeam = await playersGetByTeam(group, team);
+    setPlayers(playersByTeam)
   }
 
   useEffect(() => {
     console.log("oi");
-    takeAllPlayers();
-  }, []);
+    fetchPlayersByTeam();
+  }, [team]);
 
   return (
     <Container>
@@ -89,6 +100,8 @@ export function Players() {
           autoCorrect={false}
           value={playerName}
           onChangeText={setPlayerName}
+          onSubmitEditing={handleInsertPlayer}
+          returnKeyType="done"
         />
         <ButtonIcon icon="add" onPress={handleInsertPlayer} />
       </Form>
@@ -113,7 +126,7 @@ export function Players() {
         data={players}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <PlayerCard name={item.name} onRemove={() => {}} />
+          <PlayerCard name={item.name} onRemove={() => {deletePlayer(item.name)}} />
         )}
         ListEmptyComponent={<ListEmpty message="Não há pessoas neste time" />}
         showsVerticalScrollIndicator={false}
