@@ -24,7 +24,7 @@ export function Players() {
   return (
     <Container>
       <Header showBackButton />
-      <Highlight title={group} subtitle="adicione a galera e separe os times" />
+      <Highlight title={group} subtitle="adicione a galera e separe" />
       <Form>
         <Input placeholder="Nome do participante" autoCorrect={false} />
         <ButtonIcon icon="add" />

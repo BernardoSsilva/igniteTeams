@@ -46,7 +46,7 @@ export function Groups() {
       ) : (
         <ListEmpty message="nenhum registro encontrado!!" />
       )}
-      <Button title="Criar nova turma" onPress={handleNewGroup} />
+      <Button title="Criar novo grupo" onPress={handleNewGroup} />
     </S.Container>
   );
 }

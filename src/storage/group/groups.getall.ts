@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GROUP_COLLECTION } from "@storage/storage.config";
+import { AppError } from "@utils/app.error";
 
 export async function groupsGetAll() {
   try {
@@ -8,6 +9,6 @@ export async function groupsGetAll() {
     const groups: string[] = storage ? JSON.parse(storage) : [];
     return groups;
   } catch (error) {
-    throw error;
+    throw new AppError("Não foi possível encontrar os grupos");
   }
 }
