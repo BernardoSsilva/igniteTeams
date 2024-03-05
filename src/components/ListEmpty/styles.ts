@@ -1,4 +1,5 @@
-import styled from "styled-components/native";
+
+import styled, { css } from "styled-components/native";
 
 export const Container = styled.View`
   width: 100%;
@@ -8,9 +9,10 @@ export const Container = styled.View`
 `;
 
 export const NotFoundText = styled.Text`
-  font-size: 30px;
+${({ theme }) => css`
+font-size: 30px;
   margin-top: 20px;
-  color: ${({ theme }) => theme.COLORS.RED};
+  color: ${theme.COLORS.RED};
   text-align: center;
-  font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
-`;
+  font-family: ${theme.FONT_FAMILY.BOLD};
+`} `;
