@@ -6,7 +6,7 @@ import {
 import { ThemeProvider } from "styled-components";
 
 import { LoadingScreen } from "@components/loading";
-import { Players } from "@screens/players";
+import { RoutesIndex } from "@routes/Routesindex";
 import theme from "@theme/index";
 import { StatusBar } from "react-native";
 
@@ -19,8 +19,8 @@ export default function App() {
         barStyle="light-content"
         backgroundColor="transparent"
         translucent
-      ></StatusBar>
-      {fontsLoaded ? <Players /> : <LoadingScreen />}
+      />
+      {fontsLoaded ? <RoutesIndex /> : <LoadingScreen />}
     </ThemeProvider>
   );
 }

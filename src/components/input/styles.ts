@@ -13,7 +13,7 @@ export const Container = styled(TextInput)`
     padding: 16px;
 
     font-family: ${theme.FONT_FAMILY.REGULAR};
-    font-size: ${theme.FONT_SIZE.MD};
+    font-size: ${theme.FONT_SIZE.MD}px;
 
     margin-bottom: 16px;
   `}
