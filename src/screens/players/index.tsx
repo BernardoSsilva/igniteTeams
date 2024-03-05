@@ -1,17 +1,24 @@
-import { Header } from "@components/header";
-import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
-import { Highlight } from "@components/highlight";
-import { Input } from "@components/input";
+import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/button";
 import { ButtonIcon } from "@components/buttonIcon";
 import { Filter } from "@components/filter";
-import { Alert, FlatList } from "react-native";
-import { useState } from "react";
+import { Header } from "@components/header";
+import { Highlight } from "@components/highlight";
+import { Input } from "@components/input";
 import { PlayerCard } from "@components/playerCard";
-import { ListEmpty } from "@components/ListEmpty";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { AppError } from "@utils/app.error";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { removeGroup } from "@storage/group/group.remove";
+import { addPlayerByGroup } from "@storage/player/add.player.by.group";
+import { playersGetByGroup } from "@storage/player/players.get.by.group";
+import { AppError } from "@utils/app.error";
+import { useCallback, useEffect, useState } from "react";
+import { Alert, FlatList } from "react-native";
+import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
+import { PlayerStorageDTO } from "@storage/player/player.storage.dto";
 
 type RouteParams = {
   group: string;
@@ -19,7 +26,8 @@ type RouteParams = {
 
 export function Players() {
   const [team, setTeam] = useState("time a");
-  const [players, setPlayers] = useState<string[]>([]);
+  const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
+  const [playerName, setPlayerName] = useState("");
   const route = useRoute();
   const navigation = useNavigation();
 
@@ -39,13 +47,50 @@ export function Players() {
     }
   }
 
+  async function handleInsertPlayer() {
+    try {
+      if (playerName.trim().length == 0) {
+        return Alert.alert("Erro", "O nome do participante não pode ser vazio");
+      }
+      const newPlayer = {
+        name: playerName,
+        team,
+      };
+      await addPlayerByGroup(newPlayer, group);
+      setPlayerName("");
+    } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert("Erro", error.message);
+      } else {
+        Alert.alert(
+          "Erro",
+          "não foi possível realizar a inserção de um novo participante"
+        );
+      }
+    }
+  }
+
+  async function takeAllPlayers() {
+    setPlayers(await playersGetByGroup(group));
+  }
+
+  useEffect(() => {
+    console.log("oi");
+    takeAllPlayers();
+  }, []);
+
   return (
     <Container>
       <Header showBackButton />
       <Highlight title={group} subtitle="adicione a galera e separe" />
       <Form>
-        <Input placeholder="Nome do participante" autoCorrect={false} />
-        <ButtonIcon icon="add" />
+        <Input
+          placeholder="Nome do participante"
+          autoCorrect={false}
+          value={playerName}
+          onChangeText={setPlayerName}
+        />
+        <ButtonIcon icon="add" onPress={handleInsertPlayer} />
       </Form>
       <HeaderList>
         <FlatList
@@ -66,9 +111,9 @@ export function Players() {
 
       <FlatList
         data={players}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <PlayerCard name={item} onRemove={() => {}} />
+          <PlayerCard name={item.name} onRemove={() => {}} />
         )}
         ListEmptyComponent={<ListEmpty message="Não há pessoas neste time" />}
         showsVerticalScrollIndicator={false}
