@@ -9,22 +9,22 @@ import { FlatList } from "react-native";
 import { useState } from "react";
 import { PlayerCard } from "@components/playerCard";
 import { ListEmpty } from "@components/ListEmpty";
+import { useRoute } from "@react-navigation/native";
 
+type RouteParams = {
+  group: string;
+};
 
-type Props = {
-  groupName:string
-}
-export function Players({groupName = "Placeholder name"}:Props) {
+export function Players() {
   const [team, setTeam] = useState("time a");
   const [players, setPlayers] = useState<string[]>([]);
+  const route = useRoute();
 
+  const { group } = route.params as RouteParams;
   return (
     <Container>
       <Header showBackButton />
-      <Highlight
-        title={groupName}
-        subtitle="adicione a galera e separe os times"
-      />
+      <Highlight title={group} subtitle="adicione a galera e separe os times" />
       <Form>
         <Input placeholder="Nome do participante" autoCorrect={false} />
         <ButtonIcon icon="add" />
@@ -56,7 +56,7 @@ export function Players({groupName = "Placeholder name"}:Props) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           { paddingBottom: 100 },
-          players.length === 0 && {flex: 1}
+          players.length === 0 && { flex: 1 },
         ]}
       />
       <Button title="Remover turma" type="SECONDARY" />
