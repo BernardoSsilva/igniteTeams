@@ -7,10 +7,11 @@ import { ButtonIcon } from "@components/buttonIcon";
 import { Filter } from "@components/filter";
 import { FlatList } from "react-native";
 import { useState } from "react";
+import { PlayerCard } from "@components/playerCard";
 
 export function Players() {
   const [team, setTeam] = useState("time a");
-  const [players, setPlayers] = useState<string[]>([]);
+  const [players, setPlayers] = useState<string[]>(["Lg"]);
 
   return (
     <Container>
@@ -39,6 +40,12 @@ export function Players() {
 
         <NumberOfPlayers>{players.length}</NumberOfPlayers>
       </HeaderList>
+
+      <FlatList
+        data={players}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => <PlayerCard name={item} />}
+      />
       <Button title="Remover turma" type="SECONDARY" />
     </Container>
   );
