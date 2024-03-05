@@ -4,7 +4,7 @@ import { Highlight } from "@components/highlight";
 import { Input } from "@components/input";
 import { Button } from "@components/button";
 
-export function FilterGroups() {
+export function Players() {
   return (
     <Container>
       <Header showBackButton />
