@@ -102,6 +102,7 @@ export function Players() {
     try {
       await deleteFilterByGroup(group, team);
       fetchAllTeamsFilter();
+      fetchPlayersByTeam();
     } catch (error) {
       if (error instanceof AppError) {
         Alert.alert("Erro ao deletar", error.message);
