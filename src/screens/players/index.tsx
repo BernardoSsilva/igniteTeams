@@ -21,13 +21,17 @@ import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 import { PlayerStorageDTO } from "@storage/player/player.storage.dto";
 import { playersGetByTeam } from "@storage/player/get.player.by.team";
 import { playerRemoveByGroup } from "@storage/player/remove.player";
+import { Modal } from "@components/modal";
+import { getFiltersByGroup } from "@storage/filter/get.filter.by.group";
 
 type RouteParams = {
   group: string;
 };
 
 export function Players() {
-  const [team, setTeam] = useState("time a");
+  const [team, setTeam] = useState("");
+  const [allFiltersFromGroup, setFiltersFromGroup] = useState<string[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
   const [playerName, setPlayerName] = useState("");
   const route = useRoute();
@@ -35,12 +39,11 @@ export function Players() {
 
   const { group } = route.params as RouteParams;
 
-
-  async function  deletePlayer(playerName:string) {
-      try{
-        await playerRemoveByGroup(group,playerName)
-        fetchPlayersByTeam()
-      }catch{}
+  async function deletePlayer(playerName: string) {
+    try {
+      await playerRemoveByGroup(group, playerName);
+      fetchPlayersByTeam();
+    } catch {}
   }
   async function handleDeleteGroup() {
     try {
@@ -67,7 +70,7 @@ export function Players() {
       };
       await addPlayerByGroup(newPlayer, group);
       setPlayerName("");
-      await fetchPlayersByTeam()
+      await fetchPlayersByTeam();
     } catch (error) {
       if (error instanceof AppError) {
         Alert.alert("Erro", error.message);
@@ -80,22 +83,44 @@ export function Players() {
     }
   }
 
-  async function handleCreateNewFilter(params:type) {
-    
+  async function handleCreateNewFilter() {
+    try {
+    } catch (error) {
+      throw error;
+    }
   }
 
+  async function fetchAllTeamsFilter() {
+    const allTeams = await getFiltersByGroup(group);
+    setFiltersFromGroup(allTeams);
+  }
   async function fetchPlayersByTeam() {
     const playersByTeam = await playersGetByTeam(group, team);
-    setPlayers(playersByTeam)
+    setPlayers(playersByTeam);
+  }
+
+  function toggleModalVisibility() {
+    setModalVisible(!modalVisible);
   }
 
   useEffect(() => {
     console.log("oi");
     fetchPlayersByTeam();
+    fetchAllTeamsFilter();
   }, [team]);
 
   return (
     <Container>
+      {modalVisible ? (
+        <Modal
+          onClose={() => {
+            toggleModalVisibility();
+          }}
+        />
+      ) : (
+        <></>
+      )}
+
       <Header showBackButton />
       <Highlight title={group} subtitle="adicione a galera e separe" />
       <Form>
@@ -111,7 +136,7 @@ export function Players() {
       </Form>
       <HeaderList>
         <FlatList
-          data={team}
+          data={allFiltersFromGroup}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <Filter
@@ -122,16 +147,21 @@ export function Players() {
           )}
           horizontal
         />
-        <ButtonIcon icon="add" onPress={handleCreateNewFilter} />
 
         <NumberOfPlayers>{players.length}</NumberOfPlayers>
+        <ButtonIcon icon="add" onPress={toggleModalVisibility} />
       </HeaderList>
 
       <FlatList
         data={players}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <PlayerCard name={item.name} onRemove={() => {deletePlayer(item.name)}} />
+          <PlayerCard
+            name={item.name}
+            onRemove={() => {
+              deletePlayer(item.name);
+            }}
+          />
         )}
         ListEmptyComponent={<ListEmpty message="Não há pessoas neste time" />}
         showsVerticalScrollIndicator={false}
@@ -148,5 +178,3 @@ export function Players() {
     </Container>
   );
 }
-
-
