@@ -23,6 +23,7 @@ import { playersGetByTeam } from "@storage/player/get.player.by.team";
 import { playerRemoveByGroup } from "@storage/player/remove.player";
 import { Modal } from "@components/modal";
 import { getFiltersByGroup } from "@storage/filter/get.filter.by.group";
+import { deleteFilterByGroup } from "@storage/filter/delete.filter.by.group";
 
 type RouteParams = {
   group: string;
@@ -83,17 +84,11 @@ export function Players() {
     }
   }
 
-  async function handleCreateNewFilter() {
-    try {
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async function fetchAllTeamsFilter() {
     const allTeams = await getFiltersByGroup(group);
     setFiltersFromGroup(allTeams);
   }
+
   async function fetchPlayersByTeam() {
     const playersByTeam = await playersGetByTeam(group, team);
     setPlayers(playersByTeam);
@@ -103,16 +98,32 @@ export function Players() {
     setModalVisible(!modalVisible);
   }
 
+  async function removeFilter() {
+    try {
+      await deleteFilterByGroup(group, team);
+      fetchAllTeamsFilter();
+    } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert("Erro ao deletar", error.message);
+      } else {
+        Alert.alert(
+          "Erro ao deletar",
+          "Ocorreu um erro inesperado ao deletar o filtro"
+        );
+      }
+    }
+  }
   useEffect(() => {
     console.log("oi");
     fetchPlayersByTeam();
     fetchAllTeamsFilter();
-  }, [team]);
+  }, [team, modalVisible]);
 
   return (
     <Container>
       {modalVisible ? (
         <Modal
+          group={group}
           onClose={() => {
             toggleModalVisibility();
           }}
@@ -148,8 +159,15 @@ export function Players() {
           horizontal
         />
 
-        <NumberOfPlayers>{players.length}</NumberOfPlayers>
+        <NumberOfPlayers style={{ marginLeft: 20 }}>
+          {players.length}
+        </NumberOfPlayers>
         <ButtonIcon icon="add" onPress={toggleModalVisibility} />
+        <ButtonIcon
+          icon="close"
+          type="SECONDARY"
+          onPress={() => removeFilter()}
+        />
       </HeaderList>
 
       <FlatList
