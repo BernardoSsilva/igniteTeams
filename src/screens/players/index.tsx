@@ -80,6 +80,10 @@ export function Players() {
     }
   }
 
+  async function handleCreateNewFilter(params:type) {
+    
+  }
+
   async function fetchPlayersByTeam() {
     const playersByTeam = await playersGetByTeam(group, team);
     setPlayers(playersByTeam)
@@ -107,7 +111,7 @@ export function Players() {
       </Form>
       <HeaderList>
         <FlatList
-          data={["time a", "time b"]}
+          data={team}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <Filter
@@ -118,6 +122,7 @@ export function Players() {
           )}
           horizontal
         />
+        <ButtonIcon icon="add" onPress={handleCreateNewFilter} />
 
         <NumberOfPlayers>{players.length}</NumberOfPlayers>
       </HeaderList>
@@ -143,3 +148,5 @@ export function Players() {
     </Container>
   );
 }
+
+
