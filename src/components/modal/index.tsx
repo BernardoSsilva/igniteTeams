@@ -35,7 +35,7 @@ export function Modal({ onClose, group }: Props) {
   return (
     <Container>
       <Form>
-        <Title>
+        <Title style={{marginTop: -5}}>
           <ButtonIcon icon="close" type="SECONDARY" onPress={onClose} />
           <Highlight
             title="novo filtro"
@@ -46,13 +46,13 @@ export function Modal({ onClose, group }: Props) {
         <Input
           value={newFilterTitle}
           onChangeText={setNewFilterTitle}
-          style={{ marginTop: 20, width: 370 }}
+          style={{ marginTop: 20, width: "full" }}
           placeholder="novo filtro"
           keyboardAppearance="dark"
         />
         <Button
           onPress={handleSaveNewFilter}
-          style={{ width: 370 }}
+          style={{ width: "full" }}
           title="Criar novo filtro"
         />
       </Form>
